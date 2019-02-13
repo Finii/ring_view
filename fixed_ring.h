@@ -96,6 +96,15 @@ public:
     reference back() noexcept { return rv_.back(); }
     const_reference back() const noexcept { return rv_.back(); }
 
+    auto begin() const noexcept { return rv_.begin(); }
+    auto cbegin() const noexcept { return rv_.cbegin(); }
+    auto end() const noexcept { return rv_.end(); }
+    auto cend() const noexcept { return rv_.cend(); }
+    auto rbegin() const noexcept { return rv_.rbegin(); }
+    auto crbegin() const noexcept { return rv_.crbegin(); }
+    auto rend() const noexcept { return rv_.rend(); }
+    auto crend() const noexcept { return rv_.crend(); }
+
     void swap(fixed_ring& rhs) noexcept
     {
         using std::swap;
