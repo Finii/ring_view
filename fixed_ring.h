@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ring_view.h"
+#include "ring_span.h"
 #include <array>
 #include <cstddef>
 
@@ -57,7 +57,7 @@ public:
     {
         ctr_ = rhs.ctr_;
         auto first_idx = (&*rhs.rv_.begin() - rhs.ctr_.begin());
-        rv_ = ring_view<T>(ctr_.begin(), ctr_.end(), ctr_.begin() + first_idx, rhs.rv_.size());
+        rv_ = std::experimental::ring_span<T>(ctr_.begin(), ctr_.end(), ctr_.begin() + first_idx, rhs.rv_.size());
         return *this;
     }
 
@@ -65,7 +65,7 @@ public:
     {
         auto first_idx = (&*rhs.rv_.begin() - rhs.ctr_.begin());
         ctr_ = std::move(rhs.ctr_);
-        rv_ = ring_view<T>(ctr_.begin(), ctr_.end(), ctr_.begin() + first_idx, rhs.rv_.size());
+        rv_ = std::experimental::ring_span<T>(ctr_.begin(), ctr_.end(), ctr_.begin() + first_idx, rhs.rv_.size());
         return *this;
     }
 
@@ -105,11 +105,11 @@ public:
 
 private:
     template<class... Args>
-    fixed_ring(size_type first_idx, size_type size, Args&&... args) noexcept(Container(std::forward<Args>(args)...)) :
+    fixed_ring(size_type first_idx, size_type size, Args&&... args) :
         ctr_(std::forward<Args>(args)...),
         rv_(ctr_.begin(), ctr_.end(), ctr_.begin() + first_idx, size)
     {}
 
     Container ctr_;
-    ring_view<T> rv_;
+    std::experimental::ring_span<T> rv_;
 };
